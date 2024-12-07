@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,7 +9,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('E-commerce app'),
+        title: Text(
+          'Fishion Store',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
       body: Center(
         child: Text('Ecommerec app with api and bloc-cubit'),
