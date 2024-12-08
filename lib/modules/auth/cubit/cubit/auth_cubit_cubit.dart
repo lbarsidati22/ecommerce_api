@@ -14,7 +14,6 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String password,
     required String phone,
-    required String imageUrl,
   }) async {
     emit(RegisterLeadinglState());
     Response response = await http
