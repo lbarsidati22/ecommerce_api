@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:ecommerce_api/modules/auth/cubit/cubit/auth_cubit_state.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitialState());
@@ -25,6 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
     });
     var responseBody = jsonDecode(response.body);
     if (responseBody['status'] == true) {
+      print(responseBody);
       emit(RegisterSeccuceState());
     } else {
       emit(
@@ -32,6 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
           message: responseBody['message'],
         ),
       );
+      print(responseBody);
     }
   }
 }
