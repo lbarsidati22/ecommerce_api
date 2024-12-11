@@ -36,4 +36,33 @@ class AuthCubit extends Cubit<AuthState> {
       print(responseBody);
     }
   }
+
+  void login({
+    required String email,
+    required String password,
+  }) async {
+    emit(LoginLeadinglState());
+    try {
+      Response response = await http.post(
+        Uri.parse('https://student.valuxapps.com/api/login'),
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        if (data['status'] == true) {
+          print('User login success and his data is : $data');
+          emit(LoginSeccuceState());
+        } else {
+          print('User error login and his data is : ${data['message']}');
+          emit(LoginErrorState());
+        }
+      }
+    } catch (e) {
+      emit(LoginErrorState());
+      print(e.toString());
+    }
+  }
 }

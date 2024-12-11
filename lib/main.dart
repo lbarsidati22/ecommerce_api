@@ -1,11 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:ecommerce_api/modules/auth/login_screen.dart';
 import 'package:ecommerce_api/modules/auth/register_screen.dart';
 import 'package:ecommerce_api/modules/screens/splash_screen.dart';
+import 'package:ecommerce_api/my_bloc_observer.dart';
 import 'package:ecommerce_api/test/pages/test_splash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
+  Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
 
@@ -21,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: RegisterScreen(),
+      home: LoginScreen(),
     );
   }
 }
