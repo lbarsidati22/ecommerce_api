@@ -174,19 +174,20 @@ class LoginScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
-                              RichText(
-                                  text: TextSpan(children: [
-                                TextSpan(
-                                  text: 'Forget your password ?  ',
+                              TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'Forget password',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                TextSpan(text: 'click herer'),
-                              ]))
+                              ),
                             ],
                           ),
                         ),
