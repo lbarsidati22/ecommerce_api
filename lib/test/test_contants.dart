@@ -1,31 +1,25 @@
 import 'package:flutter/material.dart';
 
-String? testToken;
-String? token;
-Widget myFormFeild({
+Widget testFormFaild({
   required TextEditingController controller,
-  required IconData iconData,
-  required String label,
-  required TextInputType type,
+  required IconData icon,
   required String hintText,
-  bool? isSecoure,
+  required String label,
 }) =>
     TextFormField(
-      obscureText: isSecoure ?? false,
-      keyboardType: type,
       controller: controller,
-      validator: (input) {
+      validator: (_) {
         if (controller.text.isEmpty) {
-          return '$hintText most to be empty';
+          return '$hintText required';
         } else {
           return null;
         }
       },
       decoration: InputDecoration(
         label: Text(label),
-        suffixIcon: Icon(iconData),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(11),
+          borderRadius: BorderRadius.circular(12),
         ),
+        suffixIcon: Icon(icon),
       ),
     );

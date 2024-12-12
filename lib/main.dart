@@ -1,17 +1,33 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:ecommerce_api/constants.dart';
 import 'package:ecommerce_api/modules/auth/cubit/cubit/auth_cubit_cubit.dart';
 import 'package:ecommerce_api/modules/auth/login_screen.dart';
 import 'package:ecommerce_api/modules/auth/register_screen.dart';
+import 'package:ecommerce_api/modules/screens/home_screen.dart';
 import 'package:ecommerce_api/modules/screens/splash_screen.dart';
 import 'package:ecommerce_api/my_bloc_observer.dart';
+import 'package:ecommerce_api/shared/cache_helper.dart';
+import 'package:ecommerce_api/test/pages/test_home.dart';
 import 'package:ecommerce_api/test/pages/test_splash.dart';
+import 'package:ecommerce_api/test/test_auth/cubit/cubit/test_auth_cubit.dart';
+import 'package:ecommerce_api/test/test_auth/cubit/test_login.dart';
+import 'package:ecommerce_api/test/test_auth/test_register.dart';
+import 'package:ecommerce_api/test/test_helper/test_cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-  runApp(const MyApp());
+  // await TestCacheHelper.cacheInite();
+  // testToken = TestCacheHelper.getData(key: 'token');
+  // print('your token is : $testToken');
+
+  await CacheHelper.cacheInitialtion();
+  token = CacheHelper.getCacheData(key: 'token');
+  print('token is $token');
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +41,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthCubit(),
         ),
+        BlocProvider(
+          create: (context) => TestAuthCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -32,7 +51,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        home: LoginScreen(),
+        //testToken != null && testToken != '' ? TestHome() : TestLogin()
+        //token != null && token != '' ? HomeScreen() : LoginScreen()
+        home: token != null && token != '' ? HomeScreen() : LoginScreen(),
       ),
     );
   }

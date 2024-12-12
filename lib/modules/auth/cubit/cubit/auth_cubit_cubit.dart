@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:ecommerce_api/modules/auth/cubit/cubit/auth_cubit_state.dart';
+import 'package:ecommerce_api/shared/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -54,6 +55,10 @@ class AuthCubit extends Cubit<AuthState> {
         var data = jsonDecode(response.body);
         if (data['status'] == true) {
           print('User login success and his data is : $data');
+          CacheHelper.setCacheToData(
+            key: 'token',
+            value: data['data']['token'],
+          );
           emit(LoginSeccuceState());
         } else {
           print('User error login and his data is : ${data['message']}');
