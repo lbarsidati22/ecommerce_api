@@ -57,12 +57,15 @@ class AuthCubit extends Cubit<AuthState> {
           emit(LoginSeccuceState());
         } else {
           print('User error login and his data is : ${data['message']}');
-          emit(LoginErrorState());
+          emit(
+            LoginErrorState(
+              message: data['message'],
+            ),
+          );
         }
       }
     } catch (e) {
-      emit(LoginErrorState());
-      print(e.toString());
+      emit(LoginErrorState(message: e.toString()));
     }
   }
 }

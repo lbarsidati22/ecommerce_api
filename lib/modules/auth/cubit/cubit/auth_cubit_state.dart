@@ -17,7 +17,7 @@ class LoginLeadinglState extends AuthState {}
 class LoginSeccuceState extends AuthState {}
 
 class LoginErrorState extends AuthState {
-  // final String message;
+  final String message;
 
-  // LoginErrorState({required this.message});
+  LoginErrorState({required this.message});
 }
