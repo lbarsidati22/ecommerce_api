@@ -17,6 +17,7 @@ class ProfileScreen extends StatelessWidget {
         return Scaffold(
           body: cubit.userModel != null
               ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('UserName : ${cubit.userModel!.name}'),
                     SizedBox(
