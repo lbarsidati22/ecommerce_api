@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 String? testToken;
 String? token;
+const mainColor = Color(0xff222233);
 Widget myFormFeild({
   required TextEditingController controller,
   required IconData iconData,

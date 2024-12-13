@@ -39,6 +39,7 @@ dependencies:
   bloc: ^8.1.4
   http: ^1.2.2
   shared_preferences: ^2.3.3
+  flutter_svg: ^2.0.16
 
 dev_dependencies:
   flutter_test:

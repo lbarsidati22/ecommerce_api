@@ -8,14 +8,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Fishion Store',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
       body: Center(
         child: Text('Ecommerec app with api and bloc-cubit'),
       ),

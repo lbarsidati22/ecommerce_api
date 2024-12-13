@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:ecommerce_api/constants.dart';
+import 'package:ecommerce_api/layout/layout_cubit/layout_cubit.dart';
+import 'package:ecommerce_api/layout/layout_screen.dart';
 import 'package:ecommerce_api/modules/auth/cubit/cubit/auth_cubit_cubit.dart';
 import 'package:ecommerce_api/modules/auth/login_screen.dart';
 import 'package:ecommerce_api/modules/auth/register_screen.dart';
 import 'package:ecommerce_api/modules/screens/home_screen.dart';
+import 'package:ecommerce_api/modules/screens/profile_screen.dart';
 import 'package:ecommerce_api/modules/screens/splash_screen.dart';
 import 'package:ecommerce_api/my_bloc_observer.dart';
 import 'package:ecommerce_api/shared/cache_helper.dart';
@@ -42,6 +45,9 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthCubit(),
         ),
         BlocProvider(
+          create: (context) => LayoutCubit()..getUserData(),
+        ),
+        BlocProvider(
           create: (context) => TestAuthCubit(),
         ),
       ],
@@ -53,7 +59,7 @@ class MyApp extends StatelessWidget {
         ),
         //testToken != null && testToken != '' ? TestHome() : TestLogin()
         //token != null && token != '' ? HomeScreen() : LoginScreen()
-        home: token != null && token != '' ? HomeScreen() : LoginScreen(),
+        home: LayoutScreen(),
       ),
     );
   }
