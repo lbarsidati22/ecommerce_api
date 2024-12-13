@@ -45,7 +45,10 @@ class MyApp extends StatelessWidget {
           create: (context) => AuthCubit(),
         ),
         BlocProvider(
-          create: (context) => LayoutCubit()..getUserData(),
+          create: (context) => LayoutCubit()
+            ..getUserData()
+            ..getBannersData()
+            ..getCategoryData(),
         ),
         BlocProvider(
           create: (context) => TestAuthCubit(),

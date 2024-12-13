@@ -13,4 +13,26 @@ class GetUserErrorSatate extends LayoutState {
   });
 }
 
+class GetBannersSuccsessSatate extends LayoutState {}
+
+class GetBannersLeadingSatate extends LayoutState {}
+
+class GetBannersErrorSatate extends LayoutState {
+  final String error;
+  GetBannersErrorSatate({
+    required this.error,
+  });
+}
+
+class GetCategorySuccsessSatate extends LayoutState {}
+
+class GetCategoryLeadingSatate extends LayoutState {}
+
+class GetCategoryErrorSatate extends LayoutState {
+  final String error;
+  GetCategoryErrorSatate({
+    required this.error,
+  });
+}
+
 class ChangNavBarSatate extends LayoutState {}
