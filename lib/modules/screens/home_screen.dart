@@ -3,6 +3,7 @@
 import 'package:ecommerce_api/constants.dart';
 import 'package:ecommerce_api/layout/layout_cubit/layout_cubit.dart';
 import 'package:ecommerce_api/layout/layout_cubit/layout_state.dart';
+import 'package:ecommerce_api/model/prudact_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -130,26 +131,70 @@ class HomeScreen extends StatelessWidget {
                         height: 70,
                         width: double.infinity,
                         child: ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return SizedBox(
-                                width: 15,
-                              );
-                            },
-                            scrollDirection: Axis.horizontal,
-                            physics: BouncingScrollPhysics(),
-                            itemCount: cubit.categories.length,
-                            itemBuilder: (context, index) {
-                              return CircleAvatar(
-                                radius: 35,
-                                backgroundImage: NetworkImage(
-                                  cubit.categories[index].url!,
-                                ),
-                              );
-                            }),
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              width: 15,
+                            );
+                          },
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: cubit.categories.length,
+                          itemBuilder: (context, index) {
+                            return CircleAvatar(
+                              radius: 35,
+                              backgroundImage: NetworkImage(
+                                cubit.categories[index].url!,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                 SizedBox(
                   height: 15,
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Prudacts',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: mainColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      'View all',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                cubit.prudacts.isEmpty
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: mainColor,
+                        ),
+                      )
+                    : GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: cubit.prudacts.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemBuilder: (context, index) {
+                          return _prudactIem(model: cubit.prudacts[index]);
+                        }),
               ],
             ),
           ),
@@ -157,4 +202,54 @@ class HomeScreen extends StatelessWidget {
       },
     );
   }
+}
+
+Widget _prudactIem({required PrudactModel model}) {
+  return Container(
+    color: Colors.grey.shade100,
+    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+    child: Column(
+      children: [
+        Expanded(
+          child: Image.network(model.image!),
+        ),
+        Text(
+          overflow: TextOverflow.ellipsis,
+          model.name!,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Text(
+                    overflow: TextOverflow.ellipsis,
+                    '${model.price} \$',
+                    style: TextStyle(
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    overflow: TextOverflow.ellipsis,
+                    '${model.oldprice} \$',
+                    style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Icon(Icons.favorite),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

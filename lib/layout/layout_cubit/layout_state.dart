@@ -28,6 +28,10 @@ class GetCategorySuccsessSatate extends LayoutState {}
 
 class GetCategoryLeadingSatate extends LayoutState {}
 
+class GetPrudactSuccsessSatate extends LayoutState {}
+
+class GetPrudactErrorSatate extends LayoutState {}
+
 class GetCategoryErrorSatate extends LayoutState {
   final String error;
   GetCategoryErrorSatate({

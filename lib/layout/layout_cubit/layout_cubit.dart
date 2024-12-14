@@ -4,6 +4,7 @@ import 'package:ecommerce_api/constants.dart';
 import 'package:ecommerce_api/layout/layout_cubit/layout_state.dart';
 import 'package:ecommerce_api/model/banner_model.dart';
 import 'package:ecommerce_api/model/category_model.dart';
+import 'package:ecommerce_api/model/prudact_model.dart';
 import 'package:ecommerce_api/model/user_model.dart';
 import 'package:ecommerce_api/modules/screens/cart_screen.dart';
 import 'package:ecommerce_api/modules/screens/category_screen.dart';
@@ -106,6 +107,29 @@ class LayoutCubit extends Cubit<LayoutState> {
           error: responseBody['message'],
         ),
       );
+    }
+  }
+
+  List<PrudactModel> prudacts = [];
+  void getPrudactData() async {
+    Response response = await http.get(
+      Uri.parse('https://student.valuxapps.com/api/home'),
+      headers: {
+        'Authorization': token!,
+      },
+    );
+    var responseBody = jsonDecode(response.body);
+    if (responseBody['status'] == true) {
+      for (var item in responseBody['data']['products']) {
+        prudacts.add(
+          PrudactModel.fromJson(data: item),
+        );
+      }
+      print('prudact is here : $responseBody');
+      emit(GetPrudactSuccsessSatate());
+    } else {
+      print('prudact is error : $responseBody');
+      emit(GetPrudactErrorSatate());
     }
   }
 }
