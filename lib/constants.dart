@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+const mainBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
+const bodyBackgroundColor = Color.fromRGBO(32, 33, 36, 1);
+const primaryColor = Colors.white;
+const secondaryColor = Color.fromARGB(166, 158, 158, 158);
+
 String? testToken;
 String? token;
 const mainColor = Color(0xff222233);

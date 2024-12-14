@@ -17,19 +17,21 @@ import 'package:ecommerce_api/test/test_auth/cubit/cubit/test_auth_cubit.dart';
 import 'package:ecommerce_api/test/test_auth/cubit/test_login.dart';
 import 'package:ecommerce_api/test/test_auth/test_register.dart';
 import 'package:ecommerce_api/test/test_helper/test_cache_helper.dart';
+import 'package:ecommerce_api/test/test_layout/test_home_layout.dart';
+import 'package:ecommerce_api/test/test_layout/test_lyout_cubit/test_layout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-  await TestCacheHelper.cacheInite();
-  testToken = TestCacheHelper.getData(key: 'token');
-  print('your token is : $testToken');
+  // await TestCacheHelper.cacheInite();
+  // testToken = TestCacheHelper.getData(key: 'token');
+  // print('your token is : $testToken');
 
-  // await CacheHelper.cacheInitialtion();
-  // token = CacheHelper.getCacheData(key: 'token');
-  // print('token is $token');
+  await CacheHelper.cacheInitialtion();
+  token = CacheHelper.getCacheData(key: 'token');
+  print('token is $token');
   runApp(MyApp());
 }
 
@@ -54,6 +56,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => TestAuthCubit(),
         ),
+        BlocProvider(
+          create: (context) => TestLayoutCubit()
+            ..getUserData()
+            ..getBannersData()
+            ..getCategoryData()
+            ..getPrudactData(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -63,7 +72,7 @@ class MyApp extends StatelessWidget {
         ),
         //testToken != null && testToken != '' ? TestHome() : TestLogin()
         //token != null && token != '' ? HomeScreen() : LoginScreen()
-        home: TestHome(),
+        home: LayoutScreen(),
       ),
     );
   }
