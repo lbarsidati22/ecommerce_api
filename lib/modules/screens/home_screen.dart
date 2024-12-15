@@ -11,6 +11,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   final pageController = PageController();
+  final mySearchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LayoutCubit, LayoutState>(
@@ -24,6 +25,10 @@ class HomeScreen extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 TextFormField(
+                  controller: mySearchController,
+                  onChanged: (input) {
+                    cubit.filterPrudact(input: input);
+                  },
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -41,7 +46,12 @@ class HomeScreen extends StatelessWidget {
                     contentPadding: EdgeInsets.symmetric(vertical: 13),
                     fillColor: Colors.grey.shade100,
                     filled: true,
-                    suffixIcon: Icon(Icons.clear),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        mySearchController.clear();
+                      },
+                      icon: Icon(Icons.clear),
+                    ),
                     prefixIcon: Icon(Icons.search),
                   ),
                 ),
@@ -185,7 +195,9 @@ class HomeScreen extends StatelessWidget {
                     : GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: cubit.prudacts.length,
+                        itemCount: cubit.fillterAllPrudacts.isEmpty
+                            ? cubit.prudacts.length
+                            : cubit.fillterAllPrudacts.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 10,
@@ -193,7 +205,11 @@ class HomeScreen extends StatelessWidget {
                           childAspectRatio: 0.8,
                         ),
                         itemBuilder: (context, index) {
-                          return _prudactIem(model: cubit.prudacts[index]);
+                          return _prudactIem(
+                            model: cubit.fillterAllPrudacts.isEmpty
+                                ? cubit.prudacts[index]
+                                : cubit.fillterAllPrudacts[index],
+                          );
                         }),
               ],
             ),
@@ -205,51 +221,57 @@ class HomeScreen extends StatelessWidget {
 }
 
 Widget _prudactIem({required PrudactModel model}) {
-  return Container(
-    color: Colors.grey.shade100,
-    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-    child: Column(
-      children: [
-        Expanded(
-          child: Image.network(model.image!),
-        ),
-        Text(
-          overflow: TextOverflow.ellipsis,
-          model.name!,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+  return Card(
+    elevation: 5,
+    shadowColor: Colors.black,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      child: Column(
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(model.image!),
+            ),
           ),
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Text(
-                    overflow: TextOverflow.ellipsis,
-                    '${model.price} \$',
-                    style: TextStyle(
-                      fontSize: 13,
+          Text(
+            overflow: TextOverflow.ellipsis,
+            model.name!,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Text(
+                      overflow: TextOverflow.ellipsis,
+                      '${model.price} \$',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  Text(
-                    overflow: TextOverflow.ellipsis,
-                    '${model.oldprice} \$',
-                    style: TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      fontSize: 13,
+                    Text(
+                      overflow: TextOverflow.ellipsis,
+                      '${model.oldprice} \$',
+                      style: TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Icon(Icons.favorite),
-            ),
-          ],
-        ),
-      ],
+              GestureDetector(
+                onTap: () {},
+                child: Icon(Icons.favorite),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

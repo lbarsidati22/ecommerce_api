@@ -40,3 +40,5 @@ class GetCategoryErrorSatate extends LayoutState {
 }
 
 class ChangNavBarSatate extends LayoutState {}
+
+class FillterPrudactSuccsesState extends LayoutState {}

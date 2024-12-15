@@ -90,8 +90,10 @@ class LayoutCubit extends Cubit<LayoutState> {
   void getCategoryData() async {
     emit(GetCategoryLeadingSatate());
     Response response = await http.get(
-      Uri.parse('https://student.valuxapps.com/api/categories'),
-    );
+        Uri.parse('https://student.valuxapps.com/api/categories'),
+        headers: {
+          'lang': "en",
+        });
     var responseBody = jsonDecode(response.body);
     if (responseBody['status'] == true) {
       for (var item in responseBody['data']['data']) {
@@ -116,6 +118,7 @@ class LayoutCubit extends Cubit<LayoutState> {
       Uri.parse('https://student.valuxapps.com/api/home'),
       headers: {
         'Authorization': token!,
+        'lang': "en",
       },
     );
     var responseBody = jsonDecode(response.body);
@@ -131,5 +134,14 @@ class LayoutCubit extends Cubit<LayoutState> {
       print('prudact is error : $responseBody');
       emit(GetPrudactErrorSatate());
     }
+  }
+
+  List<PrudactModel> fillterAllPrudacts = [];
+  void filterPrudact({required String input}) {
+    fillterAllPrudacts = prudacts
+        .where((element) =>
+            element.name!.toLowerCase().startsWith(input.toLowerCase()))
+        .toList();
+    emit(FillterPrudactSuccsesState());
   }
 }
