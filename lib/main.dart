@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LayoutCubit()
+            ..getFavorite()
             ..getUserData()
             ..getBannersData()
             ..getCategoryData()

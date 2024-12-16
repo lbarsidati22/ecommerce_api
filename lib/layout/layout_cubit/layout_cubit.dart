@@ -144,4 +144,53 @@ class LayoutCubit extends Cubit<LayoutState> {
         .toList();
     emit(FillterPrudactSuccsesState());
   }
+
+  List<PrudactModel> favorits = [];
+  Set<String> favoritsID = {};
+  Future<void> getFavorite() async {
+    favorits.clear();
+    Response response = await http.get(
+      Uri.parse('https://student.valuxapps.com/api/favorites'),
+      headers: {
+        "lang": "en",
+        "Authorization": token!,
+      },
+    );
+    var responseBody = jsonDecode(response.body);
+    if (responseBody['status'] == true) {
+      emit(GetFavoriteSuccsessState());
+      for (var item in responseBody['data']['data']) {
+        print('favorite response is ${responseBody['data']}');
+        favorits.add(PrudactModel.fromJson(data: item['product']));
+        favoritsID.add(item['product']['id'].toString());
+      }
+      print('your favorite number is ${favorits.length}');
+    } else {
+      emit(GetFavoriteErrorState());
+    }
+  }
+
+  void addOrRemoveFavorite({required String prudactId}) async {
+    Response response = await http.post(
+        Uri.parse('https://student.valuxapps.com/api/favorites'),
+        headers: {
+          'Authorization': token!,
+          'lang': 'en',
+        },
+        body: {
+          'product_id': prudactId,
+        });
+    var responseBody = jsonDecode(response.body);
+    if (responseBody['status'] == true) {
+      if (favoritsID.contains(prudactId) == true) {
+        favoritsID.remove(prudactId);
+      } else {
+        favoritsID.add(prudactId);
+      }
+      await getFavorite();
+      emit(AddOrRemoveFavoriteSuccessState());
+    } else {
+      emit(AddOrRemoveFavoriteErrorState());
+    }
+  }
 }

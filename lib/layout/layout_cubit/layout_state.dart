@@ -42,3 +42,11 @@ class GetCategoryErrorSatate extends LayoutState {
 class ChangNavBarSatate extends LayoutState {}
 
 class FillterPrudactSuccsesState extends LayoutState {}
+
+class GetFavoriteSuccsessState extends LayoutState {}
+
+class GetFavoriteErrorState extends LayoutState {}
+
+class AddOrRemoveFavoriteSuccessState extends LayoutState {}
+
+class AddOrRemoveFavoriteErrorState extends LayoutState {}

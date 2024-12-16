@@ -206,6 +206,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         itemBuilder: (context, index) {
                           return _prudactIem(
+                            cubit: cubit,
                             model: cubit.fillterAllPrudacts.isEmpty
                                 ? cubit.prudacts[index]
                                 : cubit.fillterAllPrudacts[index],
@@ -220,7 +221,10 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Widget _prudactIem({required PrudactModel model}) {
+Widget _prudactIem({
+  required PrudactModel model,
+  required LayoutCubit cubit,
+}) {
   return Card(
     elevation: 5,
     shadowColor: Colors.black,
@@ -265,8 +269,15 @@ Widget _prudactIem({required PrudactModel model}) {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
-                child: Icon(Icons.favorite),
+                onTap: () {
+                  cubit.addOrRemoveFavorite(prudactId: model.id!.toString());
+                },
+                child: Icon(
+                  Icons.favorite,
+                  color: cubit.favoritsID.contains(model.id!.toString())
+                      ? Colors.red
+                      : Colors.grey,
+                ),
               ),
             ],
           ),
