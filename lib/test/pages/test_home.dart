@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TestHome extends StatelessWidget {
-  const TestHome({super.key});
-
+  TestHome({super.key});
+  final searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TestLayoutCubit, TestLayoutState>(
@@ -23,10 +23,19 @@ class TestHome extends StatelessWidget {
             child: ListView(
               children: [
                 TextFormField(
+                  controller: searchController,
+                  onChanged: (input) {
+                    cubit.fillterPrudact(input: input);
+                  },
                   decoration: InputDecoration(
                     hintText: 'Search',
                     prefixIcon: Icon(Icons.search),
-                    suffixIcon: Icon(Icons.close),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        searchController.clear();
+                      },
+                      icon: Icon(Icons.close),
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -136,7 +145,9 @@ class TestHome extends StatelessWidget {
                     : GridView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: cubit.prudacts.length,
+                        itemCount: cubit.fillterAllPrudacts.isEmpty
+                            ? cubit.prudacts.length
+                            : cubit.fillterAllPrudacts.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 10,
@@ -145,7 +156,10 @@ class TestHome extends StatelessWidget {
                         ),
                         itemBuilder: (context, index) {
                           return prudactItem(
-                            model: cubit.prudacts[index],
+                            cubit: cubit,
+                            model: cubit.fillterAllPrudacts.isEmpty
+                                ? cubit.prudacts[index]
+                                : cubit.fillterAllPrudacts[index],
                           );
                         },
                       )
@@ -158,7 +172,8 @@ class TestHome extends StatelessWidget {
   }
 }
 
-Widget prudactItem({required TestPrudactModel model}) {
+Widget prudactItem(
+    {required TestPrudactModel model, required TestLayoutCubit cubit}) {
   return Card(
     elevation: 2,
     shadowColor: Colors.white,
@@ -204,9 +219,14 @@ Widget prudactItem({required TestPrudactModel model}) {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  cubit.addOrRemoveFavorite(prudactId: model.id.toString());
+                },
                 child: Icon(
                   Icons.favorite,
+                  color: cubit.favoritID.contains(model.id.toString())
+                      ? Colors.red
+                      : Colors.grey,
                   size: 19,
                 ),
               )

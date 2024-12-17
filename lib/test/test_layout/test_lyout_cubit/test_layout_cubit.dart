@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ecommerce_api/constants.dart';
 import 'package:ecommerce_api/layout/layout_cubit/layout_state.dart';
+import 'package:ecommerce_api/model/prudact_model.dart';
 import 'package:ecommerce_api/test/pages/test_cart_page.dart';
 import 'package:ecommerce_api/test/pages/test_category_page.dart';
 import 'package:ecommerce_api/test/pages/test_favorite_page.dart';
@@ -111,9 +112,10 @@ class TestLayoutCubit extends Cubit<TestLayoutState> {
   void getPrudactData() async {
     try {
       emit(TestgetPrudactDataLeading());
-      Response response = await http.get(
-        Uri.parse('https://student.valuxapps.com/api/home'),
-      );
+      Response response = await http
+          .get(Uri.parse('https://student.valuxapps.com/api/home'), headers: {
+        'lang': 'en',
+      });
       var responseBody = jsonDecode(response.body);
       print('response prudacts is : $responseBody');
       if (responseBody['status'] == true) {
@@ -135,6 +137,63 @@ class TestLayoutCubit extends Cubit<TestLayoutState> {
           error: e.toString(),
         ),
       );
+    }
+  }
+
+  List<TestPrudactModel> fillterAllPrudacts = [];
+  void fillterPrudact({required String input}) {
+    fillterAllPrudacts = prudacts
+        .where((element) =>
+            element.name!.toLowerCase().startsWith(input.toLowerCase()))
+        .toList();
+    emit(TestFillterPrudactSuccsess());
+  }
+
+  List<PrudactModel> favorits = [];
+  Set<String> favoritID = {};
+  Future<void> getFavorite() async {
+    favorits.clear();
+    Response response = await http.get(
+      Uri.parse('https://student.valuxapps.com/api/favorites'),
+      headers: {
+        'Authorization': testToken!,
+      },
+    );
+    var responseBody = jsonDecode(response.body);
+    if (responseBody['status'] == true) {
+      emit(TestGetFavoriteSuccsess());
+      for (var item in responseBody['data']['data']) {
+        favorits.add(PrudactModel.fromJson(data: item['product']));
+        favoritID.add(item['product']['id'].toString());
+      }
+      print(favorits.length);
+    } else {
+      emit(TestGetFavoriteError());
+    }
+  }
+
+  void addOrRemoveFavorite({required String prudactId}) async {
+    Response response = await http.post(
+      Uri.parse('https://student.valuxapps.com/api/favorites'),
+      headers: {
+        'Authorization': testToken!,
+        'lang': 'en',
+      },
+      body: {
+        'product_id': prudactId,
+      },
+    );
+    var responseBody = jsonDecode(response.body);
+    if (responseBody['status'] == true) {
+      if (favoritID.contains(prudactId) == true) {
+        favoritID.remove(prudactId);
+      } else {
+        favoritID.add(prudactId);
+      }
+      await getFavorite();
+      emit(TestAddOrDeleteFavoriteSuccses());
+    } else {
+      emit(TestAddOrDeleteFavoriteError());
     }
   }
 }

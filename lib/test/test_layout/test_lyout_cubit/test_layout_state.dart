@@ -41,6 +41,16 @@ class TestgetPrudactDataSuccsess extends TestLayoutState {}
 
 class TestgetPrudactDataLeading extends TestLayoutState {}
 
+class TestFillterPrudactSuccsess extends TestLayoutState {}
+
+class TestGetFavoriteSuccsess extends TestLayoutState {}
+
+class TestGetFavoriteError extends TestLayoutState {}
+
+class TestAddOrDeleteFavoriteSuccses extends TestLayoutState {}
+
+class TestAddOrDeleteFavoriteError extends TestLayoutState {}
+
 class TestgetPrudactDataError extends TestLayoutState {
   final String error;
   TestgetPrudactDataError({
