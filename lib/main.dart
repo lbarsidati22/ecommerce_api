@@ -52,7 +52,8 @@ class MyApp extends StatelessWidget {
             ..getUserData()
             ..getBannersData()
             ..getCategoryData()
-            ..getPrudactData(),
+            ..getPrudactData()
+            ..getCarts(),
         ),
         BlocProvider(
           create: (context) => TestAuthCubit(),

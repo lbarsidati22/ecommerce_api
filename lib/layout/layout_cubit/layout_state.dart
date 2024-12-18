@@ -50,3 +50,11 @@ class GetFavoriteErrorState extends LayoutState {}
 class AddOrRemoveFavoriteSuccessState extends LayoutState {}
 
 class AddOrRemoveFavoriteErrorState extends LayoutState {}
+
+class GetCartsSuccsessState extends LayoutState {}
+
+class GetCartsErrorState extends LayoutState {}
+
+class AddOrRemoveCartsSuccessState extends LayoutState {}
+
+class AddOrRemoveCartsErrorState extends LayoutState {}
