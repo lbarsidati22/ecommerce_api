@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:ecommerce_api/test/pages/test_home.dart';
+import 'package:ecommerce_api/test/test_layout/test_home_layout.dart';
 import 'package:flutter/material.dart';
 
 class TestSplash extends StatefulWidget {
@@ -17,7 +18,7 @@ class _TestSplashState extends State<TestSplash> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => TestHome(),
+          builder: (context) => TestHomeLayout(),
         ),
       );
     });
