@@ -11,6 +11,7 @@ import 'package:ecommerce_api/modules/screens/category_screen.dart';
 import 'package:ecommerce_api/modules/screens/favorite_screen.dart';
 import 'package:ecommerce_api/modules/screens/home_screen.dart';
 import 'package:ecommerce_api/modules/screens/profile_screen.dart';
+import 'package:ecommerce_api/shared/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -32,7 +33,7 @@ class LayoutCubit extends Cubit<LayoutState> {
   }
 
   UserModel? userModel;
-  void getUserData() async {
+  Future<void> getUserData() async {
     try {
       emit(GetUserLeadingSatate());
       http.Response response = await http.get(
@@ -240,6 +241,67 @@ class LayoutCubit extends Cubit<LayoutState> {
     } else {
       emit(AddOrRemoveCartsErrorState());
       //filed
+    }
+  }
+
+  void changePassword({
+    required String userCurrentPassword,
+    required String newPassword,
+  }) async {
+    emit(ChangPasswordLeadingState());
+    Response response = await http.post(
+      Uri.parse('https://student.valuxapps.com/api/change-password'),
+      headers: {
+        'Authorization': token!,
+        'lang': 'en',
+      },
+      body: {
+        'current_password': userCurrentPassword,
+        'new_password': newPassword,
+      },
+    );
+    var responseBody = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      if (responseBody['status'] == true) {
+        await CacheHelper.setCacheToData(key: 'password', value: newPassword);
+        currentPassword = await CacheHelper.getCacheData(key: 'password');
+        emit(ChangPasswordSuccsessState());
+      } else {
+        emit(ChangPasswordErrorsState(
+            error: 'error is ${responseBody['message']}'));
+      }
+    } else {
+      emit(ChangPasswordErrorsState(
+          error: 'something rong , try again leter !'));
+    }
+  }
+
+  void updateUserData({
+    required String name,
+    required String email,
+    required String phone,
+  }) async {
+    try {
+      Response response = await http.put(
+        Uri.parse('https://student.valuxapps.com/api/update-profile'),
+        headers: {
+          'Authorization': token!,
+        },
+        body: {
+          'name': name,
+          'phone': phone,
+          'email': phone,
+        },
+      );
+      var responseBody = jsonDecode(response.body);
+      if (responseBody['status'] == true) {
+        emit(UpdateUserSuccsessState());
+        getUserData();
+      } else {
+        emit(UpdateUserErrorsState(error: responseBody['message']));
+      }
+    } catch (e) {
+      emit(UpdateUserErrorsState(error: e.toString()));
     }
   }
 }

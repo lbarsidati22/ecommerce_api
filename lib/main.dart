@@ -31,7 +31,10 @@ void main() async {
 
   await CacheHelper.cacheInitialtion();
   token = CacheHelper.getCacheData(key: 'token');
+  currentPassword = CacheHelper.getCacheData(key: 'password');
   print('token is $token');
+  print('currentPassword is  $currentPassword');
+  // token = null;
   runApp(MyApp());
 }
 

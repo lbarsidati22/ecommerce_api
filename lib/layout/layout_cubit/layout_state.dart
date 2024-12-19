@@ -58,3 +58,25 @@ class GetCartsErrorState extends LayoutState {}
 class AddOrRemoveCartsSuccessState extends LayoutState {}
 
 class AddOrRemoveCartsErrorState extends LayoutState {}
+
+class ChangPasswordSuccsessState extends LayoutState {}
+
+class ChangPasswordLeadingState extends LayoutState {}
+
+class ChangPasswordErrorsState extends LayoutState {
+  String error;
+  ChangPasswordErrorsState({
+    required this.error,
+  });
+}
+
+class UpdateUserSuccsessState extends LayoutState {}
+
+class UpdateUserLeadingState extends LayoutState {}
+
+class UpdateUserErrorsState extends LayoutState {
+  String error;
+  UpdateUserErrorsState({
+    required this.error,
+  });
+}

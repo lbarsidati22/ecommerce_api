@@ -6,6 +6,7 @@ const primaryColor = Colors.white;
 const secondaryColor = Color.fromARGB(166, 158, 158, 158);
 
 String? testToken;
+String? currentPassword;
 String? token;
 const mainColor = Color(0xff222233);
 Widget myFormFeild({
