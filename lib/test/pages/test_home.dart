@@ -174,66 +174,90 @@ class TestHome extends StatelessWidget {
 
 Widget prudactItem(
     {required TestPrudactModel model, required TestLayoutCubit cubit}) {
-  return Card(
-    elevation: 2,
-    shadowColor: Colors.white,
-    child: Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(11),
-                child: Image.network(
-                  model.image!,
-                )),
-          ),
-          Text(
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            model.name!,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Row(
+  return Stack(
+    children: [
+      Card(
+        elevation: 2,
+        shadowColor: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Column(
             children: [
               Expanded(
-                child: Row(
-                  children: [
-                    Text(
-                      '${model.price}\$',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 3,
-                    ),
-                    Text(
-                      '${model.oldPrice}\$',
-                      style: TextStyle(
-                        decoration: TextDecoration.lineThrough,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(11),
+                    child: Image.network(
+                      model.image!,
+                    )),
               ),
-              GestureDetector(
-                onTap: () {
-                  cubit.addOrRemoveFavorite(prudactId: model.id.toString());
-                },
-                child: Icon(
-                  Icons.favorite,
-                  color: cubit.favoritID.contains(model.id.toString())
-                      ? Colors.red
-                      : Colors.grey,
-                  size: 19,
-                ),
-              )
+              Text(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                model.name!,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          '${model.price}\$',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          '${model.oldPrice}\$',
+                          style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      cubit.addOrRemoveFavorite(prudactId: model.id.toString());
+                    },
+                    child: Icon(
+                      Icons.favorite,
+                      color: cubit.favoritID.contains(model.id.toString())
+                          ? Colors.red
+                          : Colors.grey,
+                      size: 19,
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
-    ),
+      Container(
+        height: 40,
+        width: 40,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: IconButton(
+          color: Colors.white,
+          onPressed: () {
+            cubit.addOrRemoveCarts(prudactId: model.id.toString());
+          },
+          icon: Icon(
+            Icons.shopify_outlined,
+            color: cubit.cartsID.contains(model.id.toString())
+                ? Colors.red
+                : Colors.white,
+          ),
+        ),
+      ),
+    ],
   );
 }

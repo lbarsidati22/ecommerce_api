@@ -51,6 +51,24 @@ class TestAddOrDeleteFavoriteSuccses extends TestLayoutState {}
 
 class TestAddOrDeleteFavoriteError extends TestLayoutState {}
 
+class TestGetCartsErrorState extends TestLayoutState {}
+
+class TestGetCartsSuccsessState extends TestLayoutState {}
+
+class TestAddOrRemoveCartsSuccsess extends TestLayoutState {
+  final String error;
+  TestAddOrRemoveCartsSuccsess({
+    required this.error,
+  });
+}
+
+class TestAddOrRemoveCartsError extends TestLayoutState {
+  final String error;
+  TestAddOrRemoveCartsError({
+    required this.error,
+  });
+}
+
 class TestgetPrudactDataError extends TestLayoutState {
   final String error;
   TestgetPrudactDataError({

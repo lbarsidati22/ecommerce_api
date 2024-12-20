@@ -96,7 +96,7 @@ class TestLayoutCubit extends Cubit<TestLayoutState> {
         categories.add(
           TestCategoryModel.fromJson(data: item),
         );
-        print('response category is : $responseBody');
+        // print('response category is : $responseBody');
         emit(TestgetCategoryDataSuccsess());
       }
     } else {
@@ -123,7 +123,7 @@ class TestLayoutCubit extends Cubit<TestLayoutState> {
           prudacts.add(TestPrudactModel.fromJson(data: item));
           emit(TestgetPrudactDataSuccsess());
         }
-        print(responseBody['data']['products']);
+        //   print(responseBody['data']['products']);
       } else {
         emit(
           TestgetPrudactDataError(
@@ -166,7 +166,7 @@ class TestLayoutCubit extends Cubit<TestLayoutState> {
         favorits.add(PrudactModel.fromJson(data: item['product']));
         favoritID.add(item['product']['id'].toString());
       }
-      print(favorits.length);
+      // print(favorits.length);
     } else {
       emit(TestGetFavoriteError());
     }
@@ -194,6 +194,61 @@ class TestLayoutCubit extends Cubit<TestLayoutState> {
       emit(TestAddOrDeleteFavoriteSuccses());
     } else {
       emit(TestAddOrDeleteFavoriteError());
+    }
+  }
+
+  int totalPrice = 0;
+  List<TestPrudactModel> carts = [];
+  Set<String> cartsID = {};
+  Future<void> getCarts() async {
+    carts.clear();
+    Response response = await http.get(
+      Uri.parse('https://student.valuxapps.com/api/carts'),
+      headers: {
+        'Authorization': testToken!,
+      },
+    );
+    var responseBody = jsonDecode(response.body);
+    totalPrice = responseBody['data']['total'];
+    if (responseBody['status'] == true) {
+      for (var item in responseBody['data']['cart_items']) {
+        cartsID.add(item['product']['id'].toString());
+        carts.add(TestPrudactModel.fromJson(data: item['product']));
+      }
+      print('you carts is ${carts.length}');
+      emit(TestGetCartsSuccsessState());
+    } else {
+      emit(TestGetCartsErrorState());
+    }
+  }
+
+  void addOrRemoveCarts({required String prudactId}) async {
+    Response response = await http.post(
+      Uri.parse('https://student.valuxapps.com/api/carts'),
+      headers: {
+        'Authorization': testToken!,
+      },
+      body: {
+        'product_id': prudactId,
+      },
+    );
+    var responseBody = jsonDecode(response.body);
+    if (responseBody['status'] == true) {
+      cartsID.contains(prudactId) == true
+          ? cartsID.remove(prudactId)
+          : cartsID.add(prudactId);
+      await getCarts();
+      emit(
+        TestAddOrRemoveCartsSuccsess(
+          error: responseBody['message'],
+        ),
+      );
+    } else {
+      emit(
+        TestAddOrRemoveCartsError(
+          error: responseBody['message'],
+        ),
+      );
     }
   }
 }
