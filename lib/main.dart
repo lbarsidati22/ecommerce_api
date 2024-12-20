@@ -25,16 +25,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-  await TestCacheHelper.cacheInite();
-  testToken = TestCacheHelper.getData(key: 'token');
-  print('your token is : $testToken');
+  // await TestCacheHelper.cacheInite();
+  // testToken = TestCacheHelper.getData(key: 'token');
+  // print('your token is : $testToken');
 
-  // await CacheHelper.cacheInitialtion();
-  // token = CacheHelper.getCacheData(key: 'token');
-  // currentPassword = CacheHelper.getCacheData(key: 'password');
-  // print('token is $token');
-  // print('currentPassword is  $currentPassword');
-  // token = null;
+  await CacheHelper.cacheInitialtion();
+  token = CacheHelper.getCacheData(key: 'token');
+  currentPassword = CacheHelper.getCacheData(key: 'password');
+  print('token is $token');
+  print('currentPassword is  $currentPassword');
   runApp(MyApp());
 }
 
@@ -74,14 +73,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: ThemeData.dark(
+          theme: ThemeData(
             useMaterial3: true,
           ),
           //testToken != null && testToken != '' ? TestHome() : TestLogin()
           //token != null && token != '' ? HomeScreen() : LoginScreen()
-          home: testToken != null && testToken != ''
-              ? TestSplash()
-              : TestLogin()),
+          home: token != null && token != '' ? SplashScreen() : LoginScreen()),
     );
   }
 }
